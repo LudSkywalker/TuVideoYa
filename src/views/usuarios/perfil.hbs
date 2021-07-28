@@ -1,0 +1,42 @@
+<div class="card" style=" min-width: 19rem; margin: 3%;">
+    <div class="card-body text-center" id="main">
+        <div class="row" style="max-width: 100%; padding: 2% ; ">
+            <div style="width: 280px;" class="col">
+                <img src="https://w7.pngwing.com/pngs/882/222/png-transparent-computer-icons-youtube-play-button-button-angle-logo-video-player.png"
+                    style="width: 280px; " alt="">
+                    <br>
+                    <br>
+                    <br>
+            </div>
+            <div class="col" style="min-width: 17 rem; margin-left: 8 rem;">
+                <h1 style="color: #ff2525;">Hola {{usu.usuNombre}} </h1>
+                <br>
+                {{#if cliente}}
+                <h3>Tu nombre es:</h3>
+                <h4>
+                    {{cliente.cliNombre}}
+                </h4>
+                <h3>Tu apellido es:</h3>
+                <h4>
+                    {{cliente.cliApellido}}
+                </h4>
+                <h3>Tu celular es:</h3>
+                <h4>
+                    {{cliente.cliCelular}}
+                </h4>
+
+                {{else}}
+
+                <h2>Al parecer aunque ya te registraste hay unos cuantos dato que no sabemos de ti</h2>
+                <br>
+                <h3>Para poder llenar tu perfil y disfrutar de mas de nuestros servicios
+                    <a style="color: #f55151;" href="/perfil/registro">
+                        <u>has click aqui</u>
+                    </a>
+                </h3>
+                {{/if}}
+            </div>
+        </div>
+
+    </div>
+</div>

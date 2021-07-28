@@ -1,0 +1,107 @@
+<nav class="navbar navbar-expand-lg " style="background-color: #ff3333; min-width: 19rem;">
+	<a class="navbar-brand" href="/"
+		style="color: #000000; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 210%;">
+		<strong>
+			TU VIDEO YA
+		</strong>
+	</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+		aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+		<img src="https://image.flaticon.com/icons/png/512/36/36775.png" style="width: 2rem;">
+	</button>
+	{{#if simple}}
+	{{else}}
+	{{>search}}
+	{{/if}}
+	<div class="collapse navbar-collapse" style="justify-content: flex-end;" id="navbarNav">
+		<ul class="navbar-nav">
+			<li class="nav-item active">
+				<a class="navbar-brand" href="/home" style="color: #ffffff;">
+					Home
+				</a>
+			</li>
+		</ul>
+		{{#if usu}}
+		<ul class="navbar-nav">
+			<li class="nav-item active">
+				<a class="navbar-brand" href="/muro" style="color: #ffffff;">
+					Muro
+				</a>
+			</li>
+		</ul>
+		<ul class="navbar-nav">
+			<li class="nav-item active">
+				<a class="navbar-brand" href="/muro" style="color: #ffffff;">
+					Tonkens
+				</a>
+			</li>
+		</ul>
+		<ul class="navbar-nav" style="min-width: 9.6rem ;">
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" href="" data-toggle="dropdown"
+					style="background-color: #ff3333; color: #ffffff;font-size: 140%; ;" aria-haspopup="true"
+					aria-expanded="false">
+					{{usu.usuNombre}}
+				</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown" style="text-align: left;">
+					<a class="navbar-brand" href="/perfil" style="color: #000000; font-size: 95%; padding-left: 12%;">
+						Mi perfil
+					</a>
+					<div class="dropdown-divider"></div>
+					{{#if usu.proEmpId}}
+					<a class="navbar-brand" href="/control/empresa"
+						style="color: #000000; font-size: 80%;padding-left: 12%; ">
+						Continar como
+						<br>
+						empresa
+					</a>
+					{{else}}
+					<a class="navbar-brand" href="/registro/empresa"
+						style="color: #000000; font-size: 80%;padding-left: 12%; ">
+						Registrarme como
+						<br>
+						empresa
+					</a>
+					{{/if}}
+					{{#if usu.proFreeId}}
+					<a class="navbar-brand" href="/control/freelancer"
+						style="color: #000000; font-size: 80%; padding-left: 12%;">
+						Continuar como
+						<br>
+						freelancer
+					</a>
+					{{else}}
+					<a class="navbar-brand" href="/registro/freelancer"
+						style="color: #000000; font-size: 80%; padding-left: 12%;">
+						Registrarme como
+						<br>
+						freelancer
+					</a>
+					{{/if}}
+					<div class="dropdown-divider"></div>
+					<a class="navbar-brand" href="/salir" style="color: #000000; font-size: 95%;padding-left: 12%; ">
+						Cerrar sesion
+					</a>
+				</div>
+			</li>
+		</ul>
+		{{else}}
+		
+		<ul class="navbar-nav">
+			<li class="nav-item active">
+				<a class="navbar-brand" href="/ingresar" style="color: #ffffff;">
+					Iniciar sesion
+				</a>
+			</li>
+		</ul>
+		<ul class="navbar-nav ">
+			<li class="nav-item active">
+				<a class="navbar-brand" href="/registro" style="color: #ffffff;">
+					Registrarse
+				</a>
+			</li>
+		</ul>
+	</div>
+
+	{{/if}}
+</nav>

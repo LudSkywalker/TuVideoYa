@@ -1,0 +1,2 @@
+Este archivo queda aqui y no se borra para evitar errores en la carga de los archivos al no 
+dejar una carpeta vacia

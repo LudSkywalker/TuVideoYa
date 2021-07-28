@@ -1,0 +1,100 @@
+<div class="row" style="max-width: 100%; padding: 2% ; ">
+    <div class="col" style=" width: 19 rem;">
+        <div class="card text-center" style=" min-width: 19 rem;">
+            <div class="btn-group-vertical" style=" width: 100%;">
+                <button type="button" class="btn btn-danger " onclick="meter('bien')" style="color: black; " id="bien">
+                    <h2>
+                        Bienvenida
+                    </h2>
+                </button>
+                <button type="button" class="btn btn-danger" onclick="meter('sus')" style="color: black;" id="sus">
+                    <h2>
+                        Suscripción
+                    </h2>
+                </button>
+                <button type="button" class="btn btn-danger " onclick="meter('apro')" style="color: black;" id="apro">
+                    <h2>
+                        Aprobación
+                    </h2>
+                </button>
+                <button type="button" class="btn btn-danger" onclick="meter('mate')" style="color: black;" id="mate">
+                    <h2>
+                        Material aprobado
+                    </h2>
+                </button>
+                <button type="button" class="btn btn-danger" onclick="meter('vide')" style="color: black;" id="vide">
+                    <h2>
+                        Videos pendientes
+                    </h2>
+                </button>
+                <button type="button" class="btn btn-danger" style="color: black;" onclick="meter('volv')">
+                    <h2>
+                        Volver
+                    </h2>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col" style="min-width: 70%;">
+        <div class="card" style=" min-width: 19rem;">
+                
+            <div class="card-body text-center" id="main">
+|       
+            </div>
+            
+        </div>
+    </div>
+</div>
+<script>
+
+    let main = document.getElementById('main');
+    let bien = document.getElementById('bien');
+    let sus = document.getElementById('sus');
+    let apro = document.getElementById('apro');
+    let mate = document.getElementById('mate');
+    let vide = document.getElementById('vide');
+
+    function meter(string) {
+        bien.className = "btn btn-danger ";
+        sus.className = "btn btn-danger ";
+        apro.className = "btn btn-danger ";
+        mate.className = "btn btn-danger ";
+        vide.className = "btn btn-danger ";
+        switch (string) {
+            case "bien":
+
+                main.innerHTML = "<h3>Hola {{pro.proNombre}}</h3><hr><h4> {{#if pro.proActivo}}Es un gusto tenerte de vuelta con nosotros. Por el momento estas activo, verifica cuando se vence tu suscripción para volver a pagar{{else}}{{#if pro.proFecha}}Es un gusto tenerte de vuelta con nosotros. Por el momento estas inactivo, por favor renueva tu suscripción para continuar disfrutando nuestros servicios; Cuidado, mientras tu suscripción siga vencida, nuestros clientes no van a poder disfrutar de los servicios que brindas{{else}}Bienvenido a nuestro sistema de venta de material cinematográfico, para empezar a general videos y trabajar con nosotros en la comunidad, dirígete a la pestaña de suscripción{{/if}}{{/if}}</h4>";
+
+                bien.className = "btn btn-danger active";
+                break;
+            case "sus":
+
+                main.innerHTML = "<h3>Suscripción</h3><hr><h4>{{#if pro.proActivo}}Tu suscripción sigue vigente hasta el {{pro.proFecha}}{{else}}{{#if pro.proFecha}}Tu suscripción ya ha terminado desde el {{pro.proFecha}}, para renovarla has:{{else}}Al parecer no te has suscrito todavía, por lo cual los usuarios de nuestra aplicación aun no pueden contratar tus servicios, para empezar a brindar tus servicios en la comunidad has comunícate al siguiente número:<br><br><p style='align-content: space-between;'>333 333 3333</p><br>En dicho número se te informara sobre todo nuestro sistema de pagos, tras llegar a un acuerdo y haber sido aprobado tu pago el administrador activara tu cuenta{{/if}}{{/if}}</h4>";
+
+                sus.className = "btn btn-danger active";
+                break;
+            case "apro":
+
+                main.innerHTML = "<h3>Aprobación de material</h3><hr><h4>Aquí podrás subir el material que desees sea evaluado por nuestro equipo para acoplarlo en tu perfil profesional, lo único que tienes que hacer es subir el archivo y definir de que tipo es</h4><hr><div class='row'><div class='col'><h4>Herramientas y equipos:</h4><br><form action='/control/herramienta' method='POST' enctype='multipart/form-data'><input class='btn btn-outline-danger btn-block' type='file' name='file' required ><br><div class='form-group '><label for='inputState'><h4>Tipo de equipo:</h4></label><select id='inputState' class='form-control' name='tipo' required>{{#each tipos.tipoH}}<option value='{{therId}}' label='{{therNombre }}'></option>{{/each}}</select><br><label for='inputState'><h4>Nombre del equipo o la herramienta:</h4></label><input type='text' class='form-control' placeholder='Ejemplo: Camara ursa 4k' name='nombre' required><br><label for='inputState'><h4>Precio estimado:</h4><p style='color:#ec2525c9;'>En pesos colombianos, sin comas ni puntos</p></label><input type='number' class='form-control' placeholder='Ejemplo: 1000000' name='precio' required></div><input type='hidden' value='{{pro.proId}}' name='pro'><button type='submit' class='btn btn-danger btn-block'>Enviar</button></form></div><div class='col'><h4>{{#if pro.proEmp}}Profesionales de la empresa:{{else}}Sus certificados profesionales:{{/if}}</h4><br> <form action='/control/personal' method='POST'  enctype='multipart/form-data'><input class='btn btn-outline-danger btn-block' type='file' name='file' required><br><div class='form-group'><label for='inputState'><h4>Tipo de certificacion:</h4></label><select id='inputState' class='form-control'name='tipo' required>{{#each tipos.tipoC}}<option value='{{tcarId}}' label='{{tcarNombre}}'></option>{{/each}}</select><br><label for='inputState'><h4>Nombre del certificado:</h4></label><input type='text' class='form-control' placeholder='Ejemplo: Camarografo profesional' name='nombre' required> <br><label for='inputState'><h4>Pago por proyecto:</h4><p style='color:#ec2525c9;'>En pesos colombianos, sin comas ni puntos</p></label><input type='number' class='form-control' placeholder='Ejemplo: 1000000' name='precio' required></div><input type='hidden' value='{{pro.proId}}' name='pro'><button type='submit' class='btn btn-danger btn-block'>Enviar</button></form></div></div>";
+
+                apro.className = "btn btn-danger active";
+                break;
+            case "mate":
+
+                main.innerHTML = "<h3>Material ya aprobado</h3><hr><h4>Aqui esta todo tu material que ha sido aprovado por nuestro equipo y por lo tanto, ya nuestros usuarios pueden consultar:</h4><hr><div class='row'><div class='col'><h3>Videos hechos con nosotros:</h3></div><div class='col'><h3>{{#if pro.proEmp}}Material de su empresa:{{else}}Material de sus proyectos:{{/if}}</h3><br>{{#if material.matHerra }}<h4>Herramientas y equipos:</h4>{{#each material.matHerra}}<div class='card' ><br><img class='card-img-top' src='/upload/{{herImg}}' alt='Formato no soportado'><br><a href='/upload/{{carImg}}' style='color:#e422229c;'><h4><u>Ver el documento</u></h4></a><div class='card-body'><h3 class='card-title'>{{herNombre}}</h3><h5 class='card-text'>Precio final : {{herPrecio}}</h5><h5 class='card-text'>Clalificacion dada : {{herCalificacion}}</h5></div></div><br>{{/each}}{{/if}}<br>{{#if material.matCargo }}<h4>Certificaciones y cargos:</h4>{{#each material.matCargo}}<div class='card'><br><img class='card-img-top' src='/upload/{{carImg}}' alt='Formato no soportado'><br><a href='/upload/{{carImg}}' style='color:#e422229c;'><h4><u>Ver el documento</u></h4></a><div class='card-body'><h3 class='card-title'>{{carNombre}}</h3><h5 class='card-text'>Precio final : {{carPrecio}}</h5><h5 class='card-text'>Clalificacion dada : {{carCalificacion}}</h5></div></div><br>{{/each}}{{/if}}</div></div>";
+
+                mate.className = "btn btn-danger active";
+                break;
+            case "vide":
+
+                main.innerHTML = " <h3>Videos pendientes</h3><hr><h4>Aquí podrás encontrar todos los contratos en los que estás trabajando hasta el momento:</h4>";
+
+                vide.className = "btn btn-danger active";
+                break;
+            case "volv":
+                window.location.href = '/muro'
+                break;
+        }
+    }
+    meter('bien');
+</script>

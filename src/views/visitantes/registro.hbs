@@ -1,0 +1,172 @@
+<div class="row" style="padding-top: 2%;text-align: center; width: 100%;">
+  <div class="col" style="max-width: 10%;">
+  </div>
+  <div class="col" style="width: 80%; min-width: 19rem;">
+    <h2>
+      Registrate
+    </h2>
+    <h4>
+      Has parte de nuestra comunidad
+    </h4>
+    <div class="card">
+      <form action="/registro" method="POST" >
+        <div class="row" style="padding-right: 2%;padding-left: 2%; padding-top: 2%; padding-bottom: 2%; ">
+          <div class="col" style="min-width: 13rem;padding-top: 1% ">
+            <h5>Nombre usuario</h5>
+            <input type="text" name="nombre" class="form-control" required>
+          </div>
+          <div class="col" style="min-width: 13rem;padding-top: 1% ">
+            <h5>Correo electronico</h5>
+            <input type="email" name="email" class="form-control" required>
+          </div>
+        </div>
+        <div class="row" style="padding-right: 2%;padding-left: 2%; padding-top: 2%;">
+          <div class="col" style="min-width: 13rem;padding-top: 1% ">
+            <h5>Contraseña (min 5 digitos)</h5>
+            <input type="password" name="passw" id="ps1" class="form-control" onInput="recti()" required>
+            <p style=" visibility: hidden;" id="tama">Contraseña muy corta</p>
+          </div>
+          <div class="col" style="min-width: 13rem;padding-top: 1% ">
+            <h5>Rectificación contraseña</h5>
+            <input type="password" id="ps2" class="form-control" onInput="recti()" required>
+            <p style=" visibility: hidden;" id="rect">No es la misma contraseña</p>
+          </div>
+        </div>
+        <div style="padding-bottom: 2%; padding-left: 10%;padding-right: 10%;">
+          <button type="button" id="con" class="btn btn-danger btn-lg btn-block">
+            Registrarse
+          </button>
+        </div>
+      </form>
+      <hr>
+      <h4>
+        O registrese con:
+      </h4>
+      <div class="row">
+        <div class="col" style="padding-bottom: 2%;">
+          <div align="center" id="my-signin2" onclick="clickbut();"></div>
+        </div>
+        <div class="col">
+          <div class="fb-login-button" data-width="" data-size="large" data-button-type="continue_with"
+            data-layout="default" data-auto-logout-link="false" data-use-continue-as="true" onlogin="checkLoginState()">
+          </div>
+        </div>
+      </div>
+      <form action="/registro" method="POST" id="otro">
+        <input type="hidden" name="nombre" id="name" required>
+        <input type="hidden" name="email" id="correo" required>
+        <input type="hidden" name="passw" id="contras" required>
+      </form>
+    </div>
+  </div>
+  <div class="col" style="max-width: 10%;">
+  </div>
+</div>
+<script async defer crossorigin="anonymous"
+  src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v5.0&appId=156415552441432&autoLogAppEvents=1"></script>
+
+<script src="https://apis.google.com/js/client:platform.js?onload=renderButton" async defer></script>
+
+<script>
+  window.onload = function () {
+    signOut();
+    render();
+    signOut();
+  }
+
+  function recti() {
+    let ps2 = document.getElementById("ps2").value;
+    let ps1 = document.getElementById('ps1').value;
+    if (ps1.length < 5) {
+      $("#con").attr("type", "button");
+      $("#tama").attr("style", "color: #ff0000;");
+    } else {
+      $("#tama").attr("style", " visibility: hidden;");
+      if (ps1 != ps2) {
+        $("#con").attr("type", "button");
+        $("#rect").attr("style", "color: #ff0000; fon");
+      } else {
+        $("#rect").attr("style", " visibility: hidden;");
+        $("#con").attr("type", "submit");
+      }
+    }
+  }
+</script>
+
+<script>
+  function onFailure(error) {
+    console.log(error);
+  }
+  function render() {
+    gapi.signin2.render('my-signin2', {
+      'scope': 'profile email',
+      'width': 240,
+      'height': 40,
+      'longtitle': true,
+      'theme': 'dark',
+      'onsuccess': middle,
+      'onfailure': onFailure
+    });
+  }
+  var inic = 0;
+  function clickbut() {
+    inic = inic + 1
+  }
+  function middle(googleuser) {
+    if (inic == 1) {
+      onSignIn(googleuser);
+    }
+  }
+  function onSignIn(googleuser) {
+    let datos = googleuser.getBasicProfile();
+    $("#correo").val(datos.getEmail());
+    $("#name").val(datos.getName());
+    $("#contras").val("goog");
+    let formulario = document.getElementById("otro");
+    formulario.submit();
+  }
+  function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    if (auth2) {
+      auth2.signOut();
+    }
+  }
+
+</script>
+
+<script>
+  (function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "http://connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
+  window.fbAsyncInit = function () {
+    FB.init({
+      appId: 'XXXXXXXXXXXXXXX',
+      cookie: true,
+      xfbml: true,
+      version: 'v2.0'
+    });
+  }
+
+  function checkLoginState() {
+    FB.getLoginStatus(function (response) {
+      if (response.status == 'connected') {
+        FB.api('/me', { locale: 'tr_TR', fields: 'name, email' },
+          function (response) {
+            $("#correo").val(response.email);
+            $("#name").val(response.name);
+            $("#contras").val("face");
+            let formulario = document.getElementById("otro");
+            formulario.submit();
+          });
+      }
+    })
+  }
+
+
+
+</script>

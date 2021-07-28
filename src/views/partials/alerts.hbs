@@ -1,0 +1,47 @@
+{{#if error}}
+<div class="row" style="padding-top: 3%; center; z-index: 1; position:absolute; width: 100%;" id="{{error}}">
+    <div class="col" style="max-width: 45%;"> </div>
+    <div class="col" style="width: 40 rem">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" role="alert"
+            style="text-align: center; width: 100%;">
+            <h5>
+            {{error}}
+            </h5>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="elierro();">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+    <div class="col" style="max-width: 40%;"> </div>
+</div>
+<script>
+    setTimeout(() => { document.getElementById('{{error}}').remove() }, 2500);
+    function elierro() {
+        document.getElementById('{{error}}').remove();
+    };
+</script>
+{{/if}}
+
+{{#if mensaje}}
+<div class="row" style="padding-top: 3%; center; z-index: 1; position:absolute; width: 100%;" id="{{mensaje}}">
+    <div class="col" style="max-width: 45%;"></div>
+    <div class="col" style="width: 40 rem;">
+        <div class="alert alert-success alert-dismissible fade show" role="alert" role="alert"
+            style="text-align: center; width: 100%; ">
+            <h5>
+        {{mensaje}}
+            </h5>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="elimensa();">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+    <div class="col" style="max-width: 40%;"></div>
+</div>
+<script>
+    setTimeout(() => { document.getElementById('{{mensaje}}').remove() }, 2500);
+    function elimensa() {
+        document.getElementById('{{mensaje}}').remove();
+    };
+</script>
+{{/if}}

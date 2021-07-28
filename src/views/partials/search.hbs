@@ -1,0 +1,74 @@
+<div class="row" style="width:100%; padding-right: 2%;">
+  <div class="col"></div>
+  <div style="background-color: white; width: 75%; min-width: 18rem;">
+    <form class="form-inline" method="GET" action="/ingresar">
+      <input class="form-control" type="search" placeholder="Buscar" style="width:85%;" name="busqueda" id="busc"
+        oninput="enviar(1);" autocomplete="off">
+      <div style="width:15%;">
+        <button class="btn " type="submit" style="width:100%; height: 100%;">
+          <img style="width:1rem; height: 1rem;"
+            src="https://image.flaticon.com/icons/svg/483/483356.svg"
+            alt="">
+        </button>
+      </div>
+    </form>
+    <div class="row" style="width:100%; ">
+      <div class="col">
+        <div id="recos" style=" background-color: white;z-index: 1; position:absolute; width: 100%;"> </div>
+      </div>
+    </div>
+  </div>
+  <div class="col"></div>
+</div>
+<script>
+  var iniciall = false;
+  setInterval(() => {
+    const busc = document.getElementById('busc').value;
+    iniciall = !iniciall;
+    if (!busc) {
+      var recost = document.getElementById('recos');
+      recost.innerHTML = "";
+    }
+  }, 1100);
+
+  async function enviar(n) {
+    if (n == iniciall ) {
+      const busc=document.getElementById('busc').value ;
+      if(busc){
+        const reco = { "reco":busc };
+        await recomendaciónes(reco);
+      }
+
+    }
+  }
+  async function recomendaciónes(reco) {
+    
+    await fetch('/enviar', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(reco)
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        var recost = document.getElementById('recos');
+        var reconss = "";
+        if (data) {
+          reconss = reconss + '<div >';
+          data.forEach((data) => {
+            reconss = reconss + '<div>' +
+              data.usuNombre +
+              '</div>';
+          });
+          reconss = reconss + '</div>'
+        }
+        recost.innerHTML = reconss;
+      })
+      .catch(function (err) {
+        console.error(err);
+      });
+  }
+</script>
