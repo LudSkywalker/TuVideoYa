@@ -4,17 +4,14 @@
         <div class="card-group" style="padding-left: 4%;padding-right: 4%;">
             {{#each tipoVideo}}
             <div class="card" id="bogr">
-                <div class="card-header" id="bog">
-
-                    {{!-- <img style="width: 4.5rem; height: 4.5rem;"
-                        src="https://paginasparacolorear.com/image/objetos/drawing-camara-de-video-8.png" alt=""> --}}
-                </div>
+                
                 <div class="card-body" id="titl">
-                    <a href="/search/{{tvidId}}">
+                    <a href="/videosTipo/{{tvidId}}">
                         {{tvidNombre}}
                     </a>
                 </div>
             </div>
+           
             {{/each}}
         </div>
         {{#each videos }}
@@ -28,6 +25,12 @@
                     </div>
                     <div class="col">
                         <h2>{{vidNombre}}</h2>
+                        <br>
+                        <a href="/videosTipo/{{tvidId}}" style="color:#0b0320;">
+                            <u>
+                                <h5>{{tvidNombre}}</h5>
+                            </u>
+                        </a>
                         <br>
                         <h4>{{vidDescripcion}}</h4>
                         <br>

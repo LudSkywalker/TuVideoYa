@@ -45,7 +45,7 @@ router.post("/chat", async (req, res) => {
 			"SELECT cliId FROM cliente WHERE usuario_usuId= ? ",
 			[usuario]
 		);
-		if (!clientes[0].cliId) {
+		if (!clientes[0]) {
 			req.flash(
 				"error",
 				"Para enviar el mensaje debes terminar de llenar los datos de tu perfil"
@@ -70,7 +70,10 @@ router.post("/chat", async (req, res) => {
 
 router.get("/home", async (req, res) => {
 	var videos = await pool.query(
-		"SELECT vidId , vidLink , vidNombre , vidDescripcion  FROM video LIMIT 5"
+		`SELECT v.vidId , v.vidLink , v.vidNombre , v.vidDescripcion, tv.tvidId, tv.tvidNombre FROM video v 
+		LEFT JOIN tipoVideo tv
+		ON v.tipoVideo_tvidId=tv.tvidId
+		LIMIT 5`
 	);
 	for (video of videos) {
 		var url = "";
@@ -116,18 +119,39 @@ router.post(
 	})
 );
 
+router.get("/buscar", async (req, res) => {
+	const { keyword} = req.query;
+	var query = " '%" + keyword + "%' ";
+	const vid = await pool.query(
+		`SELECT v.vidId , v.vidLink , v.vidNombre , v.vidDescripcion, 
+		tv.tvidId, tv.tvidNombre 
+		FROM video v 
+		LEFT JOIN tipoVideo tv 
+		ON v.tipoVideo_tvidId=tv.tvidId 
+		WHERE v.vidNombre LIKE ${query} 
+		OR v.vidDescripcion LIKE ${query} 
+		OR tv.tvidNombre LIKE ${query} 
+		LIMIT 5`
+	);
+	for (video of vid) {
+		video.vidLink = video.vidLink.replace("watch?v=", "embed/");
+	}
+	res.render("visitantes/buscar",{vid,keyword});
+});
 router.post("/enviar", async (req, res) => {
 	if (req.body.reco) {
 		var query = " '%" + req.body.reco + "%' ";
-		const usu = await pool.query(
-			"SELECT usuNombre FROM usuario WHERE usuNombre LIKE " +
+		const vid = await pool.query(
+			"SELECT vidNombre FROM video WHERE vidNombre LIKE " +
 				query +
-				" LIMIT 5"
+				"OR vidDescripcion LIKE " +
+				query +
+				"LIMIT 5"
 		);
-		res.json(usu);
+		res.json(vid);
 	} else {
 		const usu = {};
-		res.json(usu);
+		res.json(vid);
 	}
 });
 
@@ -157,6 +181,21 @@ router.get("/profesionales", async (req, res) => {
 	res.render("datos/pro", { pro });
 });
 
+router.get("/videosTipo/:id", async (req, res) => {
+	const { id } = req.params;
+	var videos = await pool.query(
+		`SELECT v.vidId , v.vidLink , v.vidNombre , v.vidDescripcion, tv.tvidId, tv.tvidNombre FROM video v 
+		LEFT JOIN tipoVideo tv
+		ON v.tipoVideo_tvidId=tv.tvidId
+		WHERE tv.tvidId=${id}
+		LIMIT 5`
+	);
+	for (video of videos) {
+		video.vidLink = video.vidLink.replace("watch?v=", "embed/");
+	}
+	res.render("visitantes/tipos", { videos });
+});
+
 router.get("/prueba", async (req, res) => {
 	//var devi = await pool.query("SELECT * FROM empresa");
 	// var devi = await pool.query("SELECT * FROM usuario");
@@ -183,16 +222,19 @@ router.get("/prueba", async (req, res) => {
  var prueba2 = await pool.query("SELECT * FROM cargos"); 
  var prueba={prueba1,prueba2}; */
 	/*    await pool.query("INSERT INTO video (vidLink , vidNombre , vidDescripcion , vidPrecio , cliente_cliId , proveedores_prosId , tipoVideo_tvidId) VALUES ('https://www.youtube.com/watch?v=ICPzZW9drDw','Ingenieria de la escritura GUIONES LIBRETOS HISTORIAS Sesión 4','Video bonito sobre como funcionan los libretos', 20000, 1 ,3 ,1)");*/
-	var prueba = await pool.query("SELECT * FROM video");
+	// var prueba = await pool.query("SELECT * FROM video");
 	//await pool.query("INSERT INTO proveedores (proveedor_proId,proveedor_proId1) VALUES (3,1)");
-	var proo = 4;
-	prueba.push(
-		await pool.query(
-			`SELECT * FROM proveedores WHERE proveedor_proid=${proo} OR proveedor_proid1=${proo} OR proveedor_proid2=${proo} OR proveedor_proid3=${proo}`
-		)
+	var videos = await pool.query(
+		"SELECT vidId , vidLink , vidNombre , vidDescripcion  FROM video LIMIT 5"
 	);
+	// var proo = 4;
+	// prueba.push(
+	// 	await pool.query(
+	// 		`SELECT * FROM proveedores WHERE proveedor_proid=${proo} OR proveedor_proid1=${proo} OR proveedor_proid2=${proo} OR proveedor_proid3=${proo}`
+	// 	)
+	// );
 
-	res.send(prueba);
+	res.send(videos);
 });
 
 module.exports = router;

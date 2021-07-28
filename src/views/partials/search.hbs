@@ -1,8 +1,8 @@
 <div class="row" style="width:100%; padding-right: 2%;">
   <div class="col"></div>
   <div style="background-color: white; width: 75%; min-width: 18rem;">
-    <form class="form-inline" method="GET" action="/ingresar">
-      <input class="form-control" type="search" placeholder="Buscar" style="width:85%;" name="busqueda" id="busc"
+    <form class="form-inline" method="GET" action="/buscar">
+      <input class="form-control" type="search" placeholder="Buscar" style="width:85%;" name="keyword" id="busc"
         oninput="enviar(1);" autocomplete="off">
       <div style="width:15%;">
         <button class="btn " type="submit" style="width:100%; height: 100%;">
@@ -60,7 +60,7 @@
           reconss = reconss + '<div >';
           data.forEach((data) => {
             reconss = reconss + '<div>' +
-              data.usuNombre +
+              data.vidNombre +
               '</div>';
           });
           reconss = reconss + '</div>'
